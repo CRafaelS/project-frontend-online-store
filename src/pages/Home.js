@@ -85,20 +85,16 @@ class Home extends React.Component {
               onChange={ this.onCategoryChange }
               selected={ selectedCategory }
             />
-          )}
-        <h3 data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </h3>
-        { listaProdutos.map((produto, index) => (
-          <div
-            key={ index }
-            data-testid="product"
-          >
-            <ProductCard
-              dadosProduto={ produto }
-            />
-          </div>
-        ))}
+          ) }
+        { (!listaProdutos.length) ? (
+          <h3 data-testid="home-initial-message">
+            Digite algum termo de pesquisa ou escolha uma categoria.
+          </h3>
+        ) : (
+          <ProductCard
+            listaProdutos={ listaProdutos }
+          />
+        ) }
       </main>
     );
   }
