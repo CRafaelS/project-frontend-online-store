@@ -9,8 +9,11 @@ class Home extends React.Component {
     super();
     this.state = {
       categoriesList: [],
+      selectedCategory: '',
       loading: true,
     };
+
+    this.onCategoryChange = this.onCategoryChange.bind(this);
   }
 
   async componentDidMount() {
@@ -21,13 +24,27 @@ class Home extends React.Component {
     });
   }
 
+  onCategoryChange(event) {
+    const { value } = event.target;
+    this.setState({
+      selectedCategory: value,
+    });
+  }
+
   render() {
-    const { categoriesList, loading } = this.state;
+    const { categoriesList, loading, selectedCategory } = this.state;
+    console.log(selectedCategory);
     return (
       <>
         { loading
           ? <p>Carregando...</p>
-          : <Categories categoriesList={ categoriesList } /> }
+          : (
+            <Categories
+              categoriesList={ categoriesList }
+              onChange={ this.onCategoryChange }
+              selected={ selectedCategory }
+            />
+          )}
 
         <label htmlFor="pesquisa">
           <input
