@@ -8,7 +8,8 @@ class Home extends React.Component {
   constructor() {
     super();
     this.state = {
-      categoriesList: [{}],
+      categoriesList: [],
+      loading: true,
     };
   }
 
@@ -16,14 +17,18 @@ class Home extends React.Component {
     const categories = await getCategories();
     this.setState({
       categoriesList: categories,
+      loading: false,
     });
   }
 
   render() {
-    const { categoriesList } = this.state;
+    const { categoriesList, loading } = this.state;
     return (
       <>
-        <Categories categoriesList={ categoriesList } />
+        { loading
+          ? <p>Carregando...</p>
+          : <Categories categoriesList={ categoriesList } /> }
+
         <label htmlFor="pesquisa">
           <input
             type="text"
