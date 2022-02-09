@@ -1,11 +1,33 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
-class Card extends React.Component {
+class ProductCard extends React.Component {
   render() {
+    const { listaProdutos } = this.props;
     return (
-      <div />
+      <div>
+        { listaProdutos.map((produto) => (
+          <div
+            key={ produto.id }
+            data-testid="product"
+          >
+            <h4>{ produto.title }</h4>
+            <img
+              src={ produto.thumbnail }
+              alt={ produto.title }
+              width="150"
+              height="200"
+            />
+            <h3>{produto.price}</h3>
+          </div>
+        ))}
+      </div>
     );
   }
 }
 
-export default Card;
+ProductCard.propTypes = {
+  listaProdutos: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+export default ProductCard;

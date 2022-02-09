@@ -1,21 +1,42 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Card from '../components/ProductCard';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import Categories from '../components/Categories';
+import ProductCard from '../components/ProductCard';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 
 class Home extends React.Component {
   constructor() {
     super();
     this.state = {
+      categoriesList: [],
+      selectedCategory: '',
+      loadingCategory: true,
       nomeProdutoPesquisado: '',
       listaProdutos: [],
     };
+
+    this.onCategoryChange = this.onCategoryChange.bind(this);
+  }
+
+  async componentDidMount() {
+    const categories = await getCategories();
+    this.setState({
+      categoriesList: categories,
+      loadingCategory: false,
+    });
   }
 
   onChangeInput = ({ target }) => {
     const { value } = target;
     this.setState({
       nomeProdutoPesquisado: value,
+    });
+  }
+
+  onCategoryChange(event) {
+    const { value } = event.target;
+    this.setState({
+      selectedCategory: value,
     });
   }
 
@@ -28,10 +49,16 @@ class Home extends React.Component {
   }
 
   render() {
-    const { nomeProdutoPesquisado, listaProdutos } = this.state;
-    console.log(listaProdutos);
+    const { nomeProdutoPesquisado, listaProdutos,
+      categoriesList, loadingCategory, selectedCategory } = this.state;
     return (
-      <>
+      <main>
+        <Link
+          to="/carrinho"
+          data-testid="shopping-cart-button"
+        >
+          Carrinho
+        </Link>
         <form>
           <label htmlFor="pesquisa">
             <input
@@ -50,30 +77,25 @@ class Home extends React.Component {
             Enter
           </button>
         </form>
-
-        <h3 data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </h3>
-        <div>
-          <Link
-            to="/carrinho"
-            data-testid="shopping-cart-button"
-          >
-            Carrinho
-          </Link>
-
-          { listaProdutos.map((produto, index) => (
-            <div
-              key={ index }
-              data-testid="product"
-            >
-              <Card
-                dadosProduto={ produto }
-              />
-            </div>
-          ))}
-        </div>
-      </>
+        { loadingCategory
+          ? <p>Carregando...</p>
+          : (
+            <Categories
+              categoriesList={ categoriesList }
+              onChange={ this.onCategoryChange }
+              selected={ selectedCategory }
+            />
+          ) }
+        { (!listaProdutos.length) ? (
+          <h3 data-testid="home-initial-message">
+            Digite algum termo de pesquisa ou escolha uma categoria.
+          </h3>
+        ) : (
+          <ProductCard
+            listaProdutos={ listaProdutos }
+          />
+        ) }
+      </main>
     );
   }
 }
