@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Categories from '../components/Categories';
-import { getCategories } from '../services/api';
-/* import {BrowserRouter} from 'react-router-dom' */
+import ProductCard from '../components/ProductCard';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 
 class Home extends React.Component {
   constructor() {
@@ -10,7 +10,9 @@ class Home extends React.Component {
     this.state = {
       categoriesList: [],
       selectedCategory: '',
-      loading: true,
+      loadingCategory: true,
+      nomeProdutoPesquisado: '',
+      listaProdutos: [],
     };
 
     this.onCategoryChange = this.onCategoryChange.bind(this);
@@ -20,7 +22,14 @@ class Home extends React.Component {
     const categories = await getCategories();
     this.setState({
       categoriesList: categories,
-      loading: false,
+      loadingCategory: false,
+    });
+  }
+
+  onChangeInput = ({ target }) => {
+    const { value } = target;
+    this.setState({
+      nomeProdutoPesquisado: value,
     });
   }
 
@@ -31,12 +40,44 @@ class Home extends React.Component {
     });
   }
 
+  onSubmitSearch = async () => {
+    const { nomeProdutoPesquisado } = this.state;
+    const listaProduto = await getProductsFromCategoryAndQuery({ nomeProdutoPesquisado });
+    this.setState({
+      listaProdutos: listaProduto.results,
+    });
+  }
+
   render() {
-    const { categoriesList, loading, selectedCategory } = this.state;
-    console.log(selectedCategory);
+    const { nomeProdutoPesquisado, listaProdutos,
+      categoriesList, loadingCategory, selectedCategory } = this.state;
     return (
-      <>
-        { loading
+      <main>
+        <Link
+          to="/carrinho"
+          data-testid="shopping-cart-button"
+        >
+          Carrinho
+        </Link>
+        <form>
+          <label htmlFor="pesquisa">
+            <input
+              data-testid="query-input"
+              type="text"
+              value={ nomeProdutoPesquisado }
+              id="pesquisa"
+              onChange={ this.onChangeInput }
+            />
+          </label>
+          <button
+            type="button"
+            onClick={ this.onSubmitSearch }
+            data-testid="query-button"
+          >
+            Enter
+          </button>
+        </form>
+        { loadingCategory
           ? <p>Carregando...</p>
           : (
             <Categories
@@ -45,26 +86,20 @@ class Home extends React.Component {
               selected={ selectedCategory }
             />
           )}
-
-        <label htmlFor="pesquisa">
-          <input
-            type="text"
-            /* value="home-initial-message" */
-            id="pesquisa"
-          />
-        </label>
         <h3 data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </h3>
-        <div>
-          <Link
-            to="/carrinho"
-            data-testid="shopping-cart-button"
+        { listaProdutos.map((produto, index) => (
+          <div
+            key={ index }
+            data-testid="product"
           >
-            Carrinho
-          </Link>
-        </div>
-      </>
+            <ProductCard
+              dadosProduto={ produto }
+            />
+          </div>
+        ))}
+      </main>
     );
   }
 }
