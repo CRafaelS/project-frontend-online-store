@@ -60,7 +60,6 @@ class DetalheProduto extends React.Component {
                 :
                 { '  '}
               </span>
-              <span>ausihsauisah</span>
             </div>
           ))}
         </div>
