@@ -34,15 +34,23 @@ class Home extends React.Component {
   }
 
   onCategoryChange(event) {
+    const { nomeProdutoPesquisado } = this.state;
     const { value } = event.target;
     this.setState({
       selectedCategory: value,
+    }, async () => {
+      const listaProduto = await getProductsFromCategoryAndQuery(value,
+        nomeProdutoPesquisado);
+      this.setState({
+        listaProdutos: listaProduto.results,
+      });
     });
   }
 
   onSubmitSearch = async () => {
-    const { nomeProdutoPesquisado } = this.state;
-    const listaProduto = await getProductsFromCategoryAndQuery({ nomeProdutoPesquisado });
+    const { selectedCategory, nomeProdutoPesquisado } = this.state;
+    const listaProduto = await getProductsFromCategoryAndQuery(selectedCategory,
+      nomeProdutoPesquisado);
     this.setState({
       listaProdutos: listaProduto.results,
     });
