@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
 import Carrinho from './pages/Carrinho';
+import DetalheProduto from './pages/DetalheProduto';
 import Home from './pages/Home';
 
 class App extends Component {
@@ -17,6 +18,10 @@ class App extends Component {
       <BrowserRouter>
         <Route path="/" component={ Home } />
         <Route path="/carrinho" component={ Carrinho } />
+        <Route
+          path="/detalhe/:id"
+          render={ (props) => <DetalheProduto { ...props } /> }
+        />
       </BrowserRouter>
 
     );

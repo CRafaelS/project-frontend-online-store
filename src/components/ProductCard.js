@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class ProductCard extends React.Component {
   handleClick = (event) => {
@@ -37,6 +38,12 @@ class ProductCard extends React.Component {
               height="200"
             />
             <h3>{ produto.price }</h3>
+            <Link
+              data-testid="product-detail-link"
+              to={ `/detalhe/${produto.id}` }
+            >
+              Detalhe
+            </Link>
             <button
               id={ produto.id }
               type="button"
