@@ -10,7 +10,7 @@ class DetalheProduto extends React.Component {
   }
 
   onSubmitSearch = async (id) => {
-    const dadosProduto = await getProductsFromCategoryAndQuery({ id });
+    const dadosProduto = await getProductsFromCategoryAndQuery('', id);
     console.log(dadosProduto);
     // this.setState({
     //   listaProdutos: listaProduto.results,
