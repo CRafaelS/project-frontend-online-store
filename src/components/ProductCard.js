@@ -20,7 +20,12 @@ class ProductCard extends React.Component {
               height="200"
             />
             <h3>{produto.price}</h3>
-            <Link data-testid="product-detail-link" to={ `/detalhe/${produto.id}` }> Detalhe </Link>
+            <Link
+              data-testid="product-detail-link"
+              to={ `/detalhe/${produto.id}` }
+            >
+              Detalhe
+            </Link>
           </div>
         ))}
       </div>
