@@ -11,12 +11,34 @@ class Cart extends Component {
     };
   }
 
+  componentDidUpdate() {
+    const { cartList } = this.state;
+    localStorage.setItem('cartTrybe', JSON.stringify(cartList));
+  }
+
   quantityChange = (id, counterChange) => {
     const { cartList } = this.state;
-    // switch (counterChange) {
-    //   case 'increase':
-        
-    // }
+    const index = cartList.reduce((acc, curr, currIndex) => {
+      if (curr.id === id) { return currIndex; }
+      return acc;
+    }, '');
+    console.log(index);
+    switch (counterChange) {
+    case 'increase':
+      cartList[index].quantity += 1;
+      break;
+    case 'decrease':
+      cartList[index].quantity -= 1;
+      if (cartList[index].quantity < 1) { cartList.splice(index, 1); }
+      break;
+    case 'remove':
+      cartList.splice(index, 1);
+      break;
+    default:
+    }
+    this.setState({
+      cartList,
+    });
   }
 
   render() {
