@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { getProductsID } from '../services/api';
 
-class DetalheProduto extends React.Component {
+class DetailedProduct extends React.Component {
   constructor() {
     super();
     this.state = {
-      dadosDoProduto: {},
+      productData: {},
       arrayAttributes: [],
     };
   }
@@ -19,36 +18,40 @@ class DetalheProduto extends React.Component {
   }
 
   onSubmitSearch = async (id) => {
-    const dadosProduto = await getProductsID(id);
-    console.log(dadosProduto);
+    const productData = await getProductsID(id);
+    console.log(productData);
     this.setState({
-      dadosDoProduto: dadosProduto,
-      arrayAttributes: dadosProduto.attributes,
+      productData,
+      arrayAttributes: productData.attributes,
     });
-    const { arrayAttributes } = this.state;
-    console.log(arrayAttributes);
+  }
+
+  handleClick = ( { target } ) => {
+    
   }
 
   render() {
-    const { dadosDoProduto, arrayAttributes } = this.state;
+    const { productData, arrayAttributes } = this.state;
     return (
       <div>
         <h1>Especificações Técnicas</h1>
-        <Link
-          to="/carrinho"
+        <button
+          type="button"
           data-testid="shopping-cart-button"
+          onClick={ this.handleClick }
+          id={}
         >
           Carrinho
-        </Link>
-        <h3 data-testid="product-detail-name">{ dadosDoProduto.title }</h3>
+        </button>
+        <h3 data-testid="product-detail-name">{ productData.title }</h3>
         <img
-          src={ dadosDoProduto.thumbnail }
+          src={ productData.thumbnail }
           width="300"
-          alt={ dadosDoProduto.id }
+          alt={ productData.id }
         />
         <h2>
           R$:
-          { dadosDoProduto.price }
+          { productData.price }
         </h2>
         <div className="especificacoes">
           { arrayAttributes.map((atribute, index) => (
@@ -69,7 +72,7 @@ class DetalheProduto extends React.Component {
   }
 }
 
-DetalheProduto.propTypes = {
+DetailedProduct.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -77,4 +80,4 @@ DetalheProduto.propTypes = {
   }).isRequired,
 };
 
-export default DetalheProduto;
+export default DetailedProduct;
