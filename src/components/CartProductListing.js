@@ -7,10 +7,10 @@ class CartProductListing extends React.Component {
     const { cartList, quantityChange } = this.props;
     return (
       <section>
-        {cartList.map(({ id, quantity }) => (
+        {cartList.map(({ product, quantity }) => (
           <CartProductCard
-            key={ id }
-            id={ id }
+            key={ product.id }
+            product={ product }
             quantity={ quantity }
             quantityChange={ quantityChange }
           />

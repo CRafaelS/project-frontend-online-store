@@ -16,10 +16,10 @@ class Cart extends Component {
     localStorage.setItem('cartTrybe', JSON.stringify(cartList));
   }
 
-  quantityChange = (id, counterChange) => {
+  quantityChange = (product, counterChange) => {
     const { cartList } = this.state;
     const index = cartList.reduce((acc, curr, currIndex) => {
-      if (curr.id === id) { return currIndex; }
+      if (curr.product.id === product.id) { return currIndex; }
       return acc;
     }, '');
     console.log(index);
