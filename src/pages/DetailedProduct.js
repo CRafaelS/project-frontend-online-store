@@ -14,13 +14,26 @@ class DetailedProduct extends React.Component {
       email: '',
       textarea: '',
       stars: 0,
-      id: '',
+      listProductID: [],
     };
   }
 
   componentDidMount() {
     const { match: { params: { id } } } = this.props;
     this.onSubmitSearch(id);
+    this.getProductAvaliation(id);
+  }
+
+  getProductAvaliation = (id) => {
+    const userAvaliationList = JSON.parse(localStorage.getItem('userAvaliationList'));
+    const objProductID = userAvaliationList.find(
+      (avaliationObj) => (avaliationObj.id === id),
+    );
+    if (objProductID) {
+      this.setState({
+        listProductID: objProductID.avaliation,
+      });
+    }
   }
 
   onSubmitSearch = async (id) => {
@@ -57,14 +70,14 @@ class DetailedProduct extends React.Component {
   }
 
   onClickForm = () => {
-    const { email, textarea, stars, id } = this.state;
+    const { match: { params: { id } } } = this.props;
+    const { email, textarea, stars } = this.state;
     const userAvaliationList = JSON.parse(localStorage.getItem('userAvaliationList'));
     const objAvaliation = {
       email,
       textarea,
       stars,
     };
-
     const objDoLocalstorage = {
       id,
       avaliation: [
@@ -85,11 +98,16 @@ class DetailedProduct extends React.Component {
       userAvaliationList.push(objDoLocalstorage);
     }
     localStorage.setItem('userAvaliationList', JSON.stringify(userAvaliationList));
+    this.getProductAvaliation(id);
+    this.setState({
+      email: '',
+      textarea: '',
+      stars: 0,
+    });
   }
 
   render() {
-    const { match: { params: { id } } } = this.props;
-    const { productData, arrayAttributes, email, textarea } = this.state;
+    const { productData, arrayAttributes, email, textarea, listProductID } = this.state;
     return (
       <div>
         <h1>Especificações Técnicas</h1>
@@ -217,7 +235,6 @@ class DetailedProduct extends React.Component {
           <textarea
             data-testid="product-detail-evaluation"
             name="textarea"
-            id={ textarea }
             value={ textarea }
             onChange={ this.handleChange }
           />
@@ -231,7 +248,7 @@ class DetailedProduct extends React.Component {
             Avaliar
           </button>
         </form>
-        <RewriteAvaliation id={ id } />
+        <RewriteAvaliation list={ listProductID } />
       </div>
     );
   }

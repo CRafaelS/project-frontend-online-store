@@ -2,34 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 class RewriteAvaliation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      listProductID: [],
-    };
-  }
-
-  componentDidMount() {
-    const { id } = this.props;
-    const userAvaliationList = JSON.parse(localStorage.getItem('userAvaliationList'));
-    const objProductID = userAvaliationList.find(
-      (avaliationObj) => (
-        avaliationObj.id === id
-      ),
-    );
-    if (objProductID) {
-      this.setState({
-        listProductID: objProductID.avaliation,
-      });
-    }
-  }
-
   render() {
-    const { listProductID } = this.state;
+    const { list } = this.props;
     return (
       <div>
-        {(listProductID !== [])
-          && listProductID.map((avaliation, index) => (
+        {(list !== [])
+          && list.map((avaliation, index) => (
             <div key={ index }>
               <p>Email:</p>
               <h3 data-testid="product-detail-email">
@@ -51,7 +29,7 @@ class RewriteAvaliation extends React.Component {
 }
 
 RewriteAvaliation.propTypes = {
-  id: PropTypes.string.isRequired,
+  list: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default RewriteAvaliation;
