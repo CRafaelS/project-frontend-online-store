@@ -3,18 +3,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 class ProductCard extends React.Component {
-  handleClick = (event) => {
-    const { id } = event.target;
+  handleClick = (produto) => {
     const cart = JSON.parse(localStorage.getItem('cartTrybe'));
-    if (cart.some((product) => product.id === id)) {
-      cart.forEach((product, index) => {
-        if (product.id === id) {
+    if (cart.some((cartItem) => cartItem.product.id === produto.id)) {
+      cart.forEach(({ product }, index) => {
+        if (product.id === produto.id) {
           cart[index].quantity += 1;
         }
       });
     } else {
       cart.push({
-        id,
+        product: produto,
         quantity: 1,
       });
     }
@@ -47,7 +46,7 @@ class ProductCard extends React.Component {
             <button
               id={ produto.id }
               type="button"
-              onClick={ this.handleClick }
+              onClick={ () => this.handleClick(produto) }
               data-testid="product-add-to-cart"
             >
               Adicionar  ao carrinho

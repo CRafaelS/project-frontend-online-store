@@ -4,11 +4,16 @@ import CartProductCard from './CartProductCard';
 
 class CartProductListing extends React.Component {
   render() {
-    const { cartList } = this.props;
+    const { cartList, quantityChange } = this.props;
     return (
       <section>
-        {cartList.map(({ id, quantity }) => (
-          <CartProductCard key={ id } id={ id } quantity={ quantity } />
+        {cartList.map(({ product, quantity }) => (
+          <CartProductCard
+            key={ product.id }
+            product={ product }
+            quantity={ quantity }
+            quantityChange={ quantityChange }
+          />
         ))}
       </section>
     );
@@ -17,6 +22,7 @@ class CartProductListing extends React.Component {
 
 CartProductListing.propTypes = {
   cartList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  quantityChange: PropTypes.func.isRequired,
 };
 
 export default CartProductListing;

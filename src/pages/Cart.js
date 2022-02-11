@@ -11,6 +11,36 @@ class Cart extends Component {
     };
   }
 
+  componentDidUpdate() {
+    const { cartList } = this.state;
+    localStorage.setItem('cartTrybe', JSON.stringify(cartList));
+  }
+
+  quantityChange = (product, counterChange) => {
+    const { cartList } = this.state;
+    const index = cartList.reduce((acc, curr, currIndex) => {
+      if (curr.product.id === product.id) { return currIndex; }
+      return acc;
+    }, '');
+    console.log(index);
+    switch (counterChange) {
+    case 'increase':
+      cartList[index].quantity += 1;
+      break;
+    case 'decrease':
+      cartList[index].quantity -= 1;
+      if (cartList[index].quantity < 1) { cartList.splice(index, 1); }
+      break;
+    case 'remove':
+      cartList.splice(index, 1);
+      break;
+    default:
+    }
+    this.setState({
+      cartList,
+    });
+  }
+
   render() {
     const { cartList } = this.state;
     const empty = cartList.length === 0;
@@ -23,8 +53,12 @@ class Cart extends Component {
               Seu carrinho está vazio
             </h3>
           )
-          : <CartProductListing cartList={ cartList } />}
-
+          : (
+            <CartProductListing
+              cartList={ cartList }
+              quantityChange={ this.quantityChange }
+            />
+          )}
       </main>
     );
   }
