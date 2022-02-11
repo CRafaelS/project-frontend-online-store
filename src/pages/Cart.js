@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CartProductListing from '../components/CartProductListing';
 
-class Carrinho extends Component {
+class Cart extends Component {
   constructor() {
     super();
 
@@ -16,7 +16,7 @@ class Carrinho extends Component {
     const empty = cartList.length === 0;
     return (
       <main>
-        <h1>Carrinho</h1>
+        <h1>Cart</h1>
         {empty
           ? (
             <h3 data-testid="shopping-cart-empty-message">
@@ -30,4 +30,4 @@ class Carrinho extends Component {
   }
 }
 
-export default Carrinho;
+export default Cart;

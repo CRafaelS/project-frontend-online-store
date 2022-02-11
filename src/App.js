@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
-import Carrinho from './pages/Carrinho';
-import DetalheProduto from './pages/DetalheProduto';
+import Cart from './pages/Cart';
+import DetailedProduct from './pages/DetailedProduct';
 import Home from './pages/Home';
 
 class App extends Component {
@@ -17,10 +17,10 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Route exact path="/" component={ Home } />
-        <Route path="/carrinho" component={ Carrinho } />
+        <Route path="/carrinho" component={ Cart } />
         <Route
           path="/detalhe/:id"
-          render={ (props) => <DetalheProduto { ...props } /> }
+          render={ (props) => <DetailedProduct { ...props } /> }
         />
       </BrowserRouter>
 
