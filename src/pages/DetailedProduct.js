@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getProductsID } from '../services/api';
 
 class DetailedProduct extends React.Component {
@@ -13,21 +14,34 @@ class DetailedProduct extends React.Component {
 
   componentDidMount() {
     const { match: { params: { id } } } = this.props;
-    console.log(id);
     this.onSubmitSearch(id);
   }
 
   onSubmitSearch = async (id) => {
     const productData = await getProductsID(id);
-    console.log(productData);
     this.setState({
       productData,
       arrayAttributes: productData.attributes,
     });
   }
 
-  handleClick = ( { target } ) => {
-    
+  handleClick = ({ target }) => {
+    const { id } = target;
+    const cartList = JSON.parse(localStorage.getItem('cartTrybe'));
+    const productFound = cartList.find((product) => (product.id === id));
+    if (!productFound) {
+      cartList.push({
+        id,
+        quantity: 1,
+      });
+    } else {
+      cartList.forEach((product, index) => {
+        if (product.id === id) {
+          cartList[index].quantity += 1;
+        }
+      });
+    }
+    localStorage.setItem('cartTrybe', JSON.stringify(cartList));
   }
 
   render() {
@@ -35,11 +49,17 @@ class DetailedProduct extends React.Component {
     return (
       <div>
         <h1>Especificações Técnicas</h1>
+        <Link
+          to="/carrinho"
+          data-testid="shopping-cart-button"
+        >
+          Carrinho
+        </Link>
         <button
           type="button"
-          data-testid="shopping-cart-button"
+          data-testid="product-detail-add-to-cart"
           onClick={ this.handleClick }
-          id={}
+          id={ productData.id }
         >
           Carrinho
         </button>
