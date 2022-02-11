@@ -31,23 +31,22 @@ class DetailedProduct extends React.Component {
     });
   };
 
-  handleClick = ({ target }) => {
-    const { id } = target;
-    const cartList = JSON.parse(localStorage.getItem('cartTrybe'));
-    const productFound = cartList.find((product) => (product.id === id));
-    if (!productFound) {
-      cartList.push({
-        id,
-        quantity: 1,
-      });
-    } else {
-      cartList.forEach((product, index) => {
-        if (product.id === id) {
-          cartList[index].quantity += 1;
+  handleClick = (product) => {
+    const cart = JSON.parse(localStorage.getItem('cartTrybe'));
+    console.log(product);
+    if (cart.some((cartItem) => cartItem.product.id === product.id)) {
+      cart.forEach((cartItem, index) => {
+        if (cartItem.product.id === product.id) {
+          cart[index].quantity += 1;
         }
       });
+    } else {
+      cart.push({
+        product,
+        quantity: 1,
+      });
     }
-    localStorage.setItem('cartTrybe', JSON.stringify(cartList));
+    localStorage.setItem('cartTrybe', JSON.stringify(cart));
   };
 
   handleChange = ({ target }) => {
@@ -103,7 +102,7 @@ class DetailedProduct extends React.Component {
         <button
           type="button"
           data-testid="product-detail-add-to-cart"
-          onClick={ this.handleClick }
+          onClick={ () => this.handleClick(productData) }
           id={ productData.id }
         >
           Carrinho
