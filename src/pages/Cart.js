@@ -11,6 +11,14 @@ class Cart extends Component {
     };
   }
 
+  quantityChange = (id, counterChange) => {
+    const { cartList } = this.state;
+    // switch (counterChange) {
+    //   case 'increase':
+        
+    // }
+  }
+
   render() {
     const { cartList } = this.state;
     const empty = cartList.length === 0;
@@ -23,8 +31,12 @@ class Cart extends Component {
               Seu carrinho está vazio
             </h3>
           )
-          : <CartProductListing cartList={ cartList } />}
-
+          : (
+            <CartProductListing
+              cartList={ cartList }
+              quantityChange={ this.quantityChange }
+            />
+          )}
       </main>
     );
   }

@@ -22,7 +22,7 @@ class CartProductCard extends Component {
 
   render() {
     const { product, loading } = this.state;
-    const { quantity } = this.props;
+    const { quantity, quantityChange, id } = this.props;
     return (
       <div>
         {loading
@@ -38,6 +38,27 @@ class CartProductCard extends Component {
               >
                 {`Quantidade: ${quantity}`}
               </p>
+              <button
+                type="button"
+                data-testid="product-decrease-quantity"
+                onClick={ () => quantityChange(id, 'decrease') }
+              >
+                -
+              </button>
+              <button
+                type="button"
+                onClick={ () => quantityChange(id, 'remove') }
+                name="remove"
+              >
+                x
+              </button>
+              <button
+                type="button"
+                data-testid="product-increase-quantity"
+                onClick={ () => quantityChange(id, 'increase') }
+              >
+                +
+              </button>
             </>
           )}
       </div>
@@ -48,6 +69,7 @@ class CartProductCard extends Component {
 CartProductCard.propTypes = {
   id: PropTypes.string.isRequired,
   quantity: PropTypes.number.isRequired,
+  quantityChange: PropTypes.func.isRequired,
 };
 
 export default CartProductCard;
