@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import RewriteAvaliation from '../components/RewriteAvaliation';
+import '../index.css';
 import { getProductsID } from '../services/api';
 
 class DetailedProduct extends React.Component {
@@ -9,6 +11,10 @@ class DetailedProduct extends React.Component {
     this.state = {
       productData: {},
       arrayAttributes: [],
+      email: '',
+      textarea: '',
+      stars: 0,
+      id: '',
     };
   }
 
@@ -23,7 +29,7 @@ class DetailedProduct extends React.Component {
       productData,
       arrayAttributes: productData.attributes,
     });
-  }
+  };
 
   handleClick = ({ target }) => {
     const { id } = target;
@@ -42,10 +48,49 @@ class DetailedProduct extends React.Component {
       });
     }
     localStorage.setItem('cartTrybe', JSON.stringify(cartList));
+  };
+
+  handleChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({
+      [name]: [value],
+    });
+  }
+
+  onClickForm = () => {
+    const { email, textarea, stars, id } = this.state;
+    const userAvaliationList = JSON.parse(localStorage.getItem('userAvaliationList'));
+    const objAvaliation = {
+      email,
+      textarea,
+      stars,
+    };
+
+    const objDoLocalstorage = {
+      id,
+      avaliation: [
+        objAvaliation,
+      ],
+    };
+    if (!userAvaliationList) {
+      userAvaliationList.push(objDoLocalstorage);
+    } else if (userAvaliationList.some((avaliation) => (
+      avaliation.id === id
+    ))) {
+      userAvaliationList.forEach((avaliationObj, index) => {
+        if (avaliationObj.id === id) {
+          userAvaliationList[index].avaliation.push(objAvaliation);
+        }
+      });
+    } else {
+      userAvaliationList.push(objDoLocalstorage);
+    }
+    localStorage.setItem('userAvaliationList', JSON.stringify(userAvaliationList));
   }
 
   render() {
-    const { productData, arrayAttributes } = this.state;
+    const { match: { params: { id } } } = this.props;
+    const { productData, arrayAttributes, email, textarea } = this.state;
     return (
       <div>
         <h1>Especificações Técnicas</h1>
@@ -81,12 +126,113 @@ class DetailedProduct extends React.Component {
                 {' '}
                 { atribute.name }
                 :
-                { '  '}
+                { '  ' }
+                { atribute.value_name }
               </span>
             </div>
           ))}
         </div>
 
+        <form>
+          <div className="star-rating__stars">
+            <label
+              htmlFor="product-detail-email"
+              className="star-rating__label"
+            >
+              <input
+                className="star-rating__input"
+                data-testid="product-detail-email"
+                value={ email }
+                name="email"
+                type="text"
+                id={ email }
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label
+              htmlFor="1-rating"
+              className="star-rating__label"
+            >
+              <input
+                className="star-rating__input"
+                type="radio"
+                name="stars"
+                value={ 1 }
+                data-testid="1-rating"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label
+              htmlFor="2-rating"
+              className="star-rating__label"
+            >
+              <input
+                className="star-rating__input"
+                type="radio"
+                name="stars"
+                value={ 2 }
+                data-testid="2-rating"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label
+              htmlFor="3-rating"
+              className="star-rating__label"
+            >
+              <input
+                className="star-rating__input"
+                type="radio"
+                name="stars"
+                value={ 3 }
+                data-testid="3-rating"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label
+              htmlFor="4-rating"
+              className="star-rating__label"
+            >
+              <input
+                className="star-rating__input"
+                type="radio"
+                name="stars"
+                value={ 4 }
+                data-testid="4-rating"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label
+              htmlFor="5-rating"
+              className="star-rating__label"
+            >
+              <input
+                className="star-rating__input"
+                type="radio"
+                name="stars"
+                value={ 5 }
+                data-testid="5-rating"
+                onChange={ this.handleChange }
+              />
+            </label>
+          </div>
+          <textarea
+            data-testid="product-detail-evaluation"
+            name="textarea"
+            id={ textarea }
+            value={ textarea }
+            onChange={ this.handleChange }
+          />
+
+          <button
+            data-testid="submit-review-btn"
+            type="button"
+            disabled={ this.validateForm }
+            onClick={ this.onClickForm }
+          >
+            Avaliar
+          </button>
+        </form>
+        <RewriteAvaliation id={ id } />
       </div>
     );
   }
