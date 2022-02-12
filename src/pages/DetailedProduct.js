@@ -117,14 +117,6 @@ class DetailedProduct extends React.Component {
         >
           Carrinho
         </Link>
-        <button
-          type="button"
-          data-testid="product-detail-add-to-cart"
-          onClick={ () => this.handleClick(productData) }
-          id={ productData.id }
-        >
-          Carrinho
-        </button>
         <h3 data-testid="product-detail-name">{ productData.title }</h3>
         <img
           src={ productData.thumbnail }
@@ -149,23 +141,28 @@ class DetailedProduct extends React.Component {
             </div>
           ))}
         </div>
-
+        <button
+          type="button"
+          data-testid="product-detail-add-to-cart"
+          onClick={ () => this.handleClick(productData) }
+          id={ productData.id }
+        >
+          Adicionar ao Carrinho
+        </button>
         <form>
+          <label
+            htmlFor="product-detail-email"
+          >
+            <input
+              placeholder="Email"
+              data-testid="product-detail-email"
+              value={ email }
+              name="email"
+              type="text"
+              onChange={ this.handleChange }
+            />
+          </label>
           <div className="star-rating__stars">
-            <label
-              htmlFor="product-detail-email"
-              className="star-rating__label"
-            >
-              <input
-                className="star-rating__input"
-                data-testid="product-detail-email"
-                value={ email }
-                name="email"
-                type="text"
-                id={ email }
-                onChange={ this.handleChange }
-              />
-            </label>
             <label
               htmlFor="1-rating"
               className="star-rating__label"
@@ -176,6 +173,7 @@ class DetailedProduct extends React.Component {
                 name="stars"
                 value={ 1 }
                 data-testid="1-rating"
+                id="1-rating"
                 onChange={ this.handleChange }
               />
             </label>
@@ -189,6 +187,7 @@ class DetailedProduct extends React.Component {
                 name="stars"
                 value={ 2 }
                 data-testid="2-rating"
+                id="2-rating"
                 onChange={ this.handleChange }
               />
             </label>
@@ -202,6 +201,7 @@ class DetailedProduct extends React.Component {
                 name="stars"
                 value={ 3 }
                 data-testid="3-rating"
+                id="3-rating"
                 onChange={ this.handleChange }
               />
             </label>
@@ -215,6 +215,7 @@ class DetailedProduct extends React.Component {
                 name="stars"
                 value={ 4 }
                 data-testid="4-rating"
+                id="4-rating"
                 onChange={ this.handleChange }
               />
             </label>
@@ -228,11 +229,13 @@ class DetailedProduct extends React.Component {
                 name="stars"
                 value={ 5 }
                 data-testid="5-rating"
+                id="5-rating"
                 onChange={ this.handleChange }
               />
             </label>
           </div>
           <textarea
+            placeholder="Mensagem (opcional)"
             data-testid="product-detail-evaluation"
             name="textarea"
             value={ textarea }
