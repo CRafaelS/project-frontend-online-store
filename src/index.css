@@ -16,7 +16,7 @@ code {
   position: relative;
   height: 1rem;
   width: 5rem;
-  background: url(estrela.png);
+  background: url(./images/estrela.png);
   background-size: 1rem 1rem;
 }
 .star-rating__label {
@@ -26,12 +26,12 @@ code {
 }
 
 .star-rating__stars .star-rating__label:hover {
-  background: url(starpreta.jpg);
+  background: url(./images/starpreta.jpg);
   background-size: 1rem 1rem;
 }
 
 .star-rating__stars .star-rating__label:nth-of-type(1):active {
-  background: url(starpreta.jpg);
+  background: url(./images/starpreta.jpg);
   background-size: 1rem 1rem;
 }
 
@@ -46,7 +46,6 @@ code {
 .star-rating__stars .star-rating__label:nth-of-type(1) {
   z-index: 5;
   width: 20%;
-  
 }
 .star-rating__stars .star-rating__label:nth-of-type(2) {
   z-index: 4;

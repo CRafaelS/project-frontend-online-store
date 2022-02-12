@@ -1,7 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import starImage from '../images/starpreta.jpg';
 
 class RewriteAvaliation extends React.Component {
+  countStars = (quantityStars) => {
+    const listQuantity = [];
+    for (let i = 1; i <= Number(quantityStars); i += 1) {
+      listQuantity.push(i);
+    }
+    return listQuantity;
+  }
+
   render() {
     const { list } = this.props;
     return (
@@ -9,15 +18,21 @@ class RewriteAvaliation extends React.Component {
         {(list !== [])
           && list.map((avaliation, index) => (
             <div key={ index }>
-              <p>Email:</p>
-              <h3 data-testid="product-detail-email">
+              <h4 data-testid="product-detail-email">
                 { avaliation.email }
-              </h3>
-              <h1>
-                <p>Stars:</p>
-                {avaliation.stars}
-              </h1>
-              <p>Avaliação:</p>
+              </h4>
+
+              { this.countStars(avaliation.stars).map((star) => (
+                <span key={ star }>
+                  <img
+                    src={ starImage }
+                    alt={ star }
+                    width="20"
+                    height="20"
+                  />
+                </span>
+              ))}
+
               <p>
                 {avaliation.textarea}
               </p>
