@@ -3,6 +3,13 @@ import PropTypes from 'prop-types';
 import FreteGratis from '../images/FreteGratis.png';
 
 class CartProductCard extends Component {
+  stockValidate = (product, quantity) => {
+    if (product.available_quantity <= quantity) {
+      return true;
+    }
+    return false;
+  }
+
   render() {
     const { product, quantity, quantityChange, shipping } = this.props;
     return (
@@ -41,6 +48,7 @@ class CartProductCard extends Component {
           type="button"
           data-testid="product-increase-quantity"
           onClick={ () => quantityChange(product, 'increase') }
+          disabled={ this.stockValidate(product, quantity) }
         >
           +
         </button>

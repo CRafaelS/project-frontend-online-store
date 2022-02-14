@@ -23,7 +23,6 @@ class Cart extends Component {
       if (curr.product.id === product.id) { return currIndex; }
       return acc;
     }, '');
-    console.log(index);
     switch (counterChange) {
     case 'increase':
       cartList[index].quantity += 1;
