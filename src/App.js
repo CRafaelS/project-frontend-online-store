@@ -11,6 +11,9 @@ class App extends Component {
     if (!localStorage.getItem('cartTrybe')) {
       localStorage.setItem('cartTrybe', JSON.stringify([]));
     }
+    if (!localStorage.getItem('userAvaliationList')) {
+      localStorage.setItem('userAvaliationList', JSON.stringify([]));
+    }
   }
 
   render() {

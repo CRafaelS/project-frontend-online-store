@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PreviousReviews from '../components/PreviousReviews';
 import { getProductsID } from '../services/api';
 
 class DetailedProduct extends React.Component {
@@ -9,41 +10,82 @@ class DetailedProduct extends React.Component {
     this.state = {
       productData: {},
       arrayAttributes: [],
+      email: '',
+      textarea: '',
+      stars: 0,
+      listProductID: [],
     };
   }
 
   componentDidMount() {
     const { match: { params: { id } } } = this.props;
     this.onSubmitSearch(id);
+    this.getProductAvaliation(id);
+  }
+
+  getProductAvaliation = (id) => {
+    const userAvaliationList = JSON.parse(localStorage.getItem('userAvaliationList'));
+    const objProductID = userAvaliationList.find(
+      (avaliationObj) => (avaliationObj.id === id),
+    );
+    if (objProductID) {
+      this.setState({
+        listProductID: objProductID.avaliation,
+      });
+    }
   }
 
   onSubmitSearch = async (id) => {
     const productData = await getProductsID(id);
-    this.setState({
-      productData,
-      arrayAttributes: productData.attributes,
-    });
-  }
+    this.setState({ productData, arrayAttributes: productData.attributes });
+  };
 
-  handleClick = (produto) => {
+  handleClick = (product) => {
     const cart = JSON.parse(localStorage.getItem('cartTrybe'));
-    if (cart.some((cartItem) => cartItem.product.id === produto.id)) {
-      cart.forEach(({ product }, index) => {
-        if (product.id === produto.id) {
+    console.log(product);
+    if (cart.some((cartItem) => cartItem.product.id === product.id)) {
+      cart.forEach((cartItem, index) => {
+        if (cartItem.product.id === product.id) {
           cart[index].quantity += 1;
         }
       });
     } else {
-      cart.push({
-        product: produto,
-        quantity: 1,
-      });
+      cart.push({ product, quantity: 1 });
     }
     localStorage.setItem('cartTrybe', JSON.stringify(cart));
+  };
+
+  handleChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({ [name]: [value] });
+  }
+
+  onClickForm = () => {
+    const { match: { params: { id } } } = this.props;
+    const { email, textarea, stars } = this.state;
+    const userAvaliationList = JSON.parse(localStorage.getItem('userAvaliationList'));
+    const objAvaliation = { email, textarea, stars };
+    const objDoLocalstorage = { id, avaliation: [objAvaliation] };
+    if (!userAvaliationList) {
+      userAvaliationList.push(objDoLocalstorage);
+    } else if (userAvaliationList.some((avaliation) => (
+      avaliation.id === id
+    ))) {
+      userAvaliationList.forEach((avaliationObj, index) => {
+        if (avaliationObj.id === id) {
+          userAvaliationList[index].avaliation.push(objAvaliation);
+        }
+      });
+    } else {
+      userAvaliationList.push(objDoLocalstorage);
+    }
+    localStorage.setItem('userAvaliationList', JSON.stringify(userAvaliationList));
+    this.getProductAvaliation(id);
+    this.setState({ email: '', textarea: '', stars: 0 });
   }
 
   render() {
-    const { productData, arrayAttributes } = this.state;
+    const { productData, arrayAttributes, email, textarea, listProductID } = this.state;
     return (
       <div>
         <h1>Especificações Técnicas</h1>
@@ -53,14 +95,6 @@ class DetailedProduct extends React.Component {
         >
           Carrinho
         </Link>
-        <button
-          type="button"
-          data-testid="product-detail-add-to-cart"
-          onClick={ () => this.handleClick(productData) }
-          id={ productData.id }
-        >
-          Carrinho
-        </button>
         <h3 data-testid="product-detail-name">{ productData.title }</h3>
         <img
           src={ productData.thumbnail }
@@ -75,16 +109,123 @@ class DetailedProduct extends React.Component {
           { arrayAttributes.map((atribute, index) => (
             <div key={ index }>
               <span>
-
-                {' '}
                 { atribute.name }
                 :
-                { '  '}
+                { atribute.value_name }
               </span>
             </div>
           ))}
         </div>
-
+        <button
+          type="button"
+          data-testid="product-detail-add-to-cart"
+          onClick={ () => this.handleClick(productData) }
+          id={ productData.id }
+        >
+          Adicionar ao Carrinho
+        </button>
+        <form>
+          <label
+            htmlFor="product-detail-email"
+          >
+            <input
+              placeholder="Email"
+              data-testid="product-detail-email"
+              value={ email }
+              name="email"
+              type="text"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <div className="star-rating__stars">
+            <label
+              htmlFor="1-rating"
+              className="star-rating__label"
+            >
+              <input
+                className="star-rating__input"
+                type="radio"
+                name="stars"
+                value={ 1 }
+                data-testid="1-rating"
+                id="1-rating"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label
+              htmlFor="2-rating"
+              className="star-rating__label"
+            >
+              <input
+                className="star-rating__input"
+                type="radio"
+                name="stars"
+                value={ 2 }
+                data-testid="2-rating"
+                id="2-rating"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label
+              htmlFor="3-rating"
+              className="star-rating__label"
+            >
+              <input
+                className="star-rating__input"
+                type="radio"
+                name="stars"
+                value={ 3 }
+                data-testid="3-rating"
+                id="3-rating"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label
+              htmlFor="4-rating"
+              className="star-rating__label"
+            >
+              <input
+                className="star-rating__input"
+                type="radio"
+                name="stars"
+                value={ 4 }
+                data-testid="4-rating"
+                id="4-rating"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label
+              htmlFor="5-rating"
+              className="star-rating__label"
+            >
+              <input
+                className="star-rating__input"
+                type="radio"
+                name="stars"
+                value={ 5 }
+                data-testid="5-rating"
+                id="5-rating"
+                onChange={ this.handleChange }
+              />
+            </label>
+          </div>
+          <textarea
+            placeholder="Mensagem (opcional)"
+            data-testid="product-detail-evaluation"
+            name="textarea"
+            value={ textarea }
+            onChange={ this.handleChange }
+          />
+          <button
+            data-testid="submit-review-btn"
+            type="button"
+            disabled={ this.validateForm }
+            onClick={ this.onClickForm }
+          >
+            Avaliar
+          </button>
+        </form>
+        <PreviousReviews list={ listProductID } />
       </div>
     );
   }

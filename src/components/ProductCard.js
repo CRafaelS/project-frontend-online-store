@@ -3,17 +3,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 class ProductCard extends React.Component {
-  handleClick = (produto) => {
+  handleClick = (product) => {
     const cart = JSON.parse(localStorage.getItem('cartTrybe'));
-    if (cart.some((cartItem) => cartItem.product.id === produto.id)) {
-      cart.forEach(({ product }, index) => {
-        if (product.id === produto.id) {
+    if (cart.some((cartItem) => cartItem.product.id === product.id)) {
+      cart.forEach((cartItem, index) => {
+        if (cartItem.product.id === product.id) {
           cart[index].quantity += 1;
         }
       });
     } else {
       cart.push({
-        product: produto,
+        product,
         quantity: 1,
       });
     }
