@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import CartProductListing from '../components/CartProductListing';
 
 class Cart extends Component {
@@ -54,10 +55,21 @@ class Cart extends Component {
             </h3>
           )
           : (
-            <CartProductListing
-              cartList={ cartList }
-              quantityChange={ this.quantityChange }
-            />
+            <>
+              <CartProductListing
+                cartList={ cartList }
+                quantityChange={ this.quantityChange }
+              />
+              <Link to="/checkout">
+                <button
+                  type="button"
+                  data-testid="checkout-products"
+                >
+                  Finalizar compra
+                </button>
+              </Link>
+            </>
+
           )}
       </main>
     );
