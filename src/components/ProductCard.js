@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import FreteGratis from '../images/FreteGratis.png';
 
 class ProductCard extends React.Component {
   handleClick = (product) => {
@@ -30,6 +31,13 @@ class ProductCard extends React.Component {
             data-testid="product"
           >
             <h4>{ produto.title }</h4>
+            {(produto.shipping.free_shipping)
+              && <img
+                src={ FreteGratis }
+                alt=" Frete Gratis"
+                width={ 50 }
+                data-testid="free-shipping"
+              /> }
             <img
               src={ produto.thumbnail }
               alt={ produto.title }
