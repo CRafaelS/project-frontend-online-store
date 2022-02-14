@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import CartButton from '../components/CartButton';
 import Categories from '../components/Categories';
 import ProductCard from '../components/ProductCard';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
@@ -7,15 +7,18 @@ import { getCategories, getProductsFromCategoryAndQuery } from '../services/api'
 class Home extends React.Component {
   constructor() {
     super();
+    const cartItems = JSON.parse(localStorage.getItem('cartTrybe'));
     this.state = {
       categoriesList: [],
       selectedCategory: '',
       loadingCategory: true,
       nomeProdutoPesquisado: '',
       listaProdutos: [],
+      cartQuantity: cartItems.reduce((sum, { quantity }) => sum + quantity, 0),
     };
 
     this.onCategoryChange = this.onCategoryChange.bind(this);
+    this.cartQuantityChange = this.cartQuantityChange.bind(this);
   }
 
   async componentDidMount() {
@@ -56,17 +59,18 @@ class Home extends React.Component {
     });
   }
 
+  cartQuantityChange() {
+    this.setState(({ cartQuantity: oldCartQuantity }) => ({
+      cartQuantity: oldCartQuantity + 1,
+    }));
+  }
+
   render() {
-    const { nomeProdutoPesquisado, listaProdutos,
+    const { nomeProdutoPesquisado, listaProdutos, cartQuantity,
       categoriesList, loadingCategory, selectedCategory } = this.state;
     return (
       <main>
-        <Link
-          to="/carrinho"
-          data-testid="shopping-cart-button"
-        >
-          Carrinho
-        </Link>
+        <CartButton cartQuantity={ cartQuantity } />
         <form>
           <label htmlFor="pesquisa">
             <input
@@ -101,6 +105,7 @@ class Home extends React.Component {
         ) : (
           <ProductCard
             listaProdutos={ listaProdutos }
+            cartQuantityChange={ this.cartQuantityChange }
           />
         ) }
       </main>

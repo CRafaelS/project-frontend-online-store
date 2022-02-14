@@ -5,6 +5,7 @@ import FreteGratis from '../images/FreteGratis.png';
 
 class ProductCard extends React.Component {
   handleClick = (product) => {
+    const { cartQuantityChange } = this.props;
     const cart = JSON.parse(localStorage.getItem('cartTrybe'));
     if (cart.some((cartItem) => cartItem.product.id === product.id)) {
       cart.forEach((cartItem, index) => {
@@ -19,6 +20,7 @@ class ProductCard extends React.Component {
       });
     }
     localStorage.setItem('cartTrybe', JSON.stringify(cart));
+    cartQuantityChange();
   }
 
   render() {
@@ -68,6 +70,7 @@ class ProductCard extends React.Component {
 
 ProductCard.propTypes = {
   listaProdutos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  cartQuantityChange: PropTypes.func.isRequired,
 };
 
 export default ProductCard;
