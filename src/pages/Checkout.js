@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 class Checkout extends React.Component {
   constructor() {
@@ -22,8 +22,14 @@ class Checkout extends React.Component {
               width={ 200 }
             />
             <p>{ `R$ ${item.product.price}` }</p>
+            <p>{ item.quantity }</p>
           </div>
         ))}
+        <h3>
+          {`R$ ${cartItems.reduce((sum, { product: { price }, quantity }) => (
+            sum + price * quantity
+          ), 0)}`}
+        </h3>
       </div>
     );
   }
