@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import CartButton from '../components/CartButton';
 import PreviousReviews from '../components/PreviousReviews';
 import { getProductsID } from '../services/api';
 
 class DetailedProduct extends React.Component {
   constructor() {
     super();
+    const cartItems = JSON.parse(localStorage.getItem('cartTrybe'));
     this.state = {
       productData: {},
       arrayAttributes: [],
@@ -14,7 +15,10 @@ class DetailedProduct extends React.Component {
       textarea: '',
       stars: 0,
       listProductID: [],
+      cartQuantity: cartItems.reduce((sum, { quantity }) => sum + quantity, 0),
     };
+
+    this.cartQuantityChange = this.cartQuantityChange.bind(this);
   }
 
   componentDidMount() {
@@ -53,6 +57,7 @@ class DetailedProduct extends React.Component {
       cart.push({ product, quantity: 1 });
     }
     localStorage.setItem('cartTrybe', JSON.stringify(cart));
+    this.cartQuantityChange();
   };
 
   handleChange = ({ target }) => {
@@ -84,17 +89,19 @@ class DetailedProduct extends React.Component {
     this.setState({ email: '', textarea: '', stars: 0 });
   }
 
+  cartQuantityChange() {
+    this.setState(({ cartQuantity: oldCartQuantity }) => ({
+      cartQuantity: oldCartQuantity + 1,
+    }));
+  }
+
   render() {
-    const { productData, arrayAttributes, email, textarea, listProductID } = this.state;
+    const { productData, arrayAttributes, email,
+      textarea, listProductID, cartQuantity } = this.state;
     return (
       <div>
         <h1>Especificações Técnicas</h1>
-        <Link
-          to="/carrinho"
-          data-testid="shopping-cart-button"
-        >
-          Carrinho
-        </Link>
+        <CartButton cartQuantity={ cartQuantity } />
         <h3 data-testid="product-detail-name">{ productData.title }</h3>
         <img
           src={ productData.thumbnail }
