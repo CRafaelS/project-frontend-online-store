@@ -1,7 +1,15 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 class CartProductCard extends Component {
+  stockValidate = (product, quantity) => {
+    console.log(product);
+    if (product.available_quantity <= quantity) {
+      return true;
+    }
+    return false;
+  }
+
   render() {
     const { product, quantity, quantityChange } = this.props;
     return (
@@ -33,6 +41,7 @@ class CartProductCard extends Component {
           type="button"
           data-testid="product-increase-quantity"
           onClick={ () => quantityChange(product, 'increase') }
+          disabled={ this.stockValidate(product, quantity) }
         >
           +
         </button>
