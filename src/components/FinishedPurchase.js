@@ -12,7 +12,7 @@ class FinishedPurchase extends React.Component {
       Address: '',
       complement: '',
       cidade: '',
-      numero:'',
+      numero: '',
     };
   }
 
@@ -24,10 +24,20 @@ class FinishedPurchase extends React.Component {
   }
 
   render() {
-    const { NomeCompleto, Email, Cpf, tel, Cep, Address, complement, cidade, numero } = this.state;
+    const {
+      NomeCompleto,
+      Email,
+      Cpf,
+      tel,
+      Cep,
+      Address,
+      complement,
+      cidade,
+      numero,
+    } = this.state;
     return (
       <div>
-        <h1>Informações do Comprador </h1>
+        <h2>Informações do Comprador </h2>
         <form>
           <label htmlFor="Nome Completo">
             <input

@@ -15,7 +15,7 @@ class PaymentMethod extends React.Component {
   render() {
     return (
       <div>
-        <h1>Método de Pagamento </h1>
+        <h2>Método de Pagamento </h2>
         <form>
           <label htmlFor="Pagamento">
             <h4>Boleto</h4>
