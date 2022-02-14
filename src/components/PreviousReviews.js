@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import starImage from '../images/starpreta.jpg';
 
-class RewriteAvaliation extends React.Component {
+class PreviousReviews extends React.Component {
   countStars = (quantityStars) => {
     const listQuantity = [];
     for (let i = 1; i <= Number(quantityStars); i += 1) {
@@ -43,8 +43,8 @@ class RewriteAvaliation extends React.Component {
   }
 }
 
-RewriteAvaliation.propTypes = {
+PreviousReviews.propTypes = {
   list: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default RewriteAvaliation;
+export default PreviousReviews;

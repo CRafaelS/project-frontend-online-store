@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import RewriteAvaliation from '../components/RewriteAvaliation';
+import PreviousReviews from '../components/PreviousReviews';
 import { getProductsID } from '../services/api';
 
 class DetailedProduct extends React.Component {
@@ -225,7 +225,7 @@ class DetailedProduct extends React.Component {
             Avaliar
           </button>
         </form>
-        <RewriteAvaliation list={ listProductID } />
+        <PreviousReviews list={ listProductID } />
       </div>
     );
   }
