@@ -69,7 +69,6 @@ class Cart extends Component {
                 </button>
               </Link>
             </>
-
           )}
       </main>
     );
