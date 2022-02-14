@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import RewriteAvaliation from '../components/RewriteAvaliation';
-import '../index.css';
 import { getProductsID } from '../services/api';
 
 class DetailedProduct extends React.Component {
@@ -38,10 +37,7 @@ class DetailedProduct extends React.Component {
 
   onSubmitSearch = async (id) => {
     const productData = await getProductsID(id);
-    this.setState({
-      productData,
-      arrayAttributes: productData.attributes,
-    });
+    this.setState({ productData, arrayAttributes: productData.attributes });
   };
 
   handleClick = (product) => {
@@ -54,36 +50,22 @@ class DetailedProduct extends React.Component {
         }
       });
     } else {
-      cart.push({
-        product,
-        quantity: 1,
-      });
+      cart.push({ product, quantity: 1 });
     }
     localStorage.setItem('cartTrybe', JSON.stringify(cart));
   };
 
   handleChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({
-      [name]: [value],
-    });
+    this.setState({ [name]: [value] });
   }
 
   onClickForm = () => {
     const { match: { params: { id } } } = this.props;
     const { email, textarea, stars } = this.state;
     const userAvaliationList = JSON.parse(localStorage.getItem('userAvaliationList'));
-    const objAvaliation = {
-      email,
-      textarea,
-      stars,
-    };
-    const objDoLocalstorage = {
-      id,
-      avaliation: [
-        objAvaliation,
-      ],
-    };
+    const objAvaliation = { email, textarea, stars };
+    const objDoLocalstorage = { id, avaliation: [objAvaliation] };
     if (!userAvaliationList) {
       userAvaliationList.push(objDoLocalstorage);
     } else if (userAvaliationList.some((avaliation) => (
@@ -99,11 +81,7 @@ class DetailedProduct extends React.Component {
     }
     localStorage.setItem('userAvaliationList', JSON.stringify(userAvaliationList));
     this.getProductAvaliation(id);
-    this.setState({
-      email: '',
-      textarea: '',
-      stars: 0,
-    });
+    this.setState({ email: '', textarea: '', stars: 0 });
   }
 
   render() {
@@ -131,11 +109,8 @@ class DetailedProduct extends React.Component {
           { arrayAttributes.map((atribute, index) => (
             <div key={ index }>
               <span>
-
-                {' '}
                 { atribute.name }
                 :
-                { '  ' }
                 { atribute.value_name }
               </span>
             </div>
@@ -241,7 +216,6 @@ class DetailedProduct extends React.Component {
             value={ textarea }
             onChange={ this.handleChange }
           />
-
           <button
             data-testid="submit-review-btn"
             type="button"
