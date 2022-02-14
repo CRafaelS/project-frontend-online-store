@@ -13,6 +13,7 @@ class CartProductListing extends React.Component {
             product={ product }
             quantity={ quantity }
             quantityChange={ quantityChange }
+            shipping={ product.shipping.free_shipping }
           />
         ))}
       </section>
