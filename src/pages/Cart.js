@@ -58,7 +58,7 @@ class Cart extends Component {
               cartList={ cartList }
               quantityChange={ this.quantityChange }
             />
-          )}
+          ) }
       </main>
     );
   }
